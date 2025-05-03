@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Персонажи сериала</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="slider">
+        <div class="slides">
+            <div class="card">
+                <img src="Cart/wolt.webp" alt="" />
+                <h2>Уолтер Уайт</h2>
+                <p>Легендарный варитель метамфетамина, известный своим выдающимся мастерством и уникальным подходом к
+                    производству. Его стремление к совершенству и инновации в химии делает его продукт непревзойденным
+                    по качеству.</p>
+                <video controls width="320">
+                    <source src="Cart/wolt.mp4" type="video/mp4">
+                </video>
+                <button class="btn" onclick="showPhone('+7 965 068-26-06')">Связаться</button>
+            </div>
+
+            <div class="card">
+                <img src="Cart/rob.webp" alt="" />
+                <h2>Джесси Пинкман</h2>
+                <p>Бывший ученик Уолтера и его партнер в бизнесе по производству метамфетамина.</p>
+                <video controls width="320">
+                    <source src="Cart/rob.mp4" type="video/mp4">
+                </video>
+                <button class="btn" onclick="showPhone('+7 924 104-68-95')">Связаться</button>
+            </div>
+
+            <div class="card">
+                <img src="Cart/Sol.webp" alt="" />
+                <h2>Сол Гудман</h2>
+                <p>Юрист, который помогает Уолтеру и Джесси с юридическими вопросами их бизнеса.</p>
+                <video controls width="320">
+                    <source src="Cart/Sol.mp4" type="video/mp4">
+                </video>
+                <button class="btn" onclick="showPhone('+7 924 103-13-78')">Связаться</button>
+            </div>
+
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn">❮</button>
+            <button class="nav-button" id="nextBtn">❯</button>
+        </div>
+    </div>
+
+    <div id="phoneModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <p id="phoneNumber"></p>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelector('.slides');
+        const cards = document.querySelectorAll('.card');
+        const videos = document.querySelectorAll('.card video');
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            const totalSlides = cards.length;
+
+            if (index >= totalSlides) {
+                currentIndex = 0;
+            } else if (index < 0) {
+                currentIndex = totalSlides - 1;
+            } else {
+                currentIndex = index;
+            }
+
+            slides.style.transform = `translateX(-${currentIndex * (299 / totalSlides)}%)`;
+
+            videos.forEach((video, idx) => {
+                if (idx !== currentIndex) {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+        }
+
+        function toggleVideo() {
+            const currentVideo = videos[currentIndex];
+            if (currentVideo.paused) {
+                currentVideo.play();
+            } else {
+                currentVideo.pause();
+            }
+        }
+
+        function showPhone(number) {
+            const modal = document.getElementById('phoneModal');
+            const phoneNumberElement = document.getElementById('phoneNumber');
+            
+            phoneNumberElement.textContent = `Номер телефона: ${number}`;
+            modal.style.display = 'block';
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', () => showSlide(currentIndex - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => showSlide(currentIndex + 1));
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                toggleVideo();
+            }
+        });
+
+        
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            document.getElementById('phoneModal').style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+          const modal = document.getElementById('phoneModal');
+          if (event.target === modal) {
+              modal.style.display = "none";
+          }
+        }
+
+        showSlide(currentIndex);
+    </script>
+
+    <link rel='stylesheet' href='styles.css'>
+</body>
+
+</html>
